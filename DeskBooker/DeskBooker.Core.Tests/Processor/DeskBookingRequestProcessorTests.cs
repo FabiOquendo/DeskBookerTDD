@@ -1,10 +1,10 @@
-﻿using DeskBooker.Core.Domain;
-using DeskBooker.Core.DataInterface;
-using System;
-using Xunit;
+﻿using DeskBooker.Core.DataInterface;
+using DeskBooker.Core.Domain;
 using Moq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Xunit;
 
 namespace DeskBooker.Core.Processor
 {
@@ -26,17 +26,15 @@ namespace DeskBooker.Core.Processor
                 Date = new DateTime(2021, 4, 10)
             };
 
-            _availableDesks = new List<Desk> { new Desk { Id = 1 } };
+            _availableDesks = new List<Desk> { new Desk { Id = 7 } };
 
             _deskBookingRepositoryMock = new Mock<IDeskBookingRepository>();
             _deskRepositoryMock = new Mock<IDeskRepository>();
             _deskRepositoryMock.Setup(x => x.GetAvailableDesks(_request.Date))
-                .Returns(_availableDesks);
+              .Returns(_availableDesks);
 
             _processor = new DeskBookingRequestProcessor(
-                _deskBookingRepositoryMock.Object,
-                _deskRepositoryMock.Object
-            );
+              _deskBookingRepositoryMock.Object, _deskRepositoryMock.Object);
         }
 
         [Fact]
@@ -66,10 +64,10 @@ namespace DeskBooker.Core.Processor
         {
             DeskBooking savedDeskBooking = null;
             _deskBookingRepositoryMock.Setup(x => x.Save(It.IsAny<DeskBooking>()))
-                .Callback<DeskBooking>(deskBooking =>
-                {
-                    savedDeskBooking = deskBooking;
-                });
+              .Callback<DeskBooking>(deskBooking =>
+              {
+                  savedDeskBooking = deskBooking;
+              });
 
             _processor.BookDesk(_request);
 
@@ -97,7 +95,7 @@ namespace DeskBooker.Core.Processor
         [InlineData(DeskBookingResultCode.Success, true)]
         [InlineData(DeskBookingResultCode.NoDeskAvailable, false)]
         public void ShouldReturnExpectedResultCode(
-            DeskBookingResultCode expectedResultCode, bool isDeskAvailable)
+          DeskBookingResultCode expectedResultCode, bool isDeskAvailable)
         {
             if (!isDeskAvailable)
             {
@@ -111,8 +109,9 @@ namespace DeskBooker.Core.Processor
 
         [Theory]
         [InlineData(5, true)]
+        [InlineData(null, false)]
         public void ShouldReturnExpectedDeskBookingId(
-            int? expectedDeskBookingId, bool isDeskAvailable)
+          int? expectedDeskBookingId, bool isDeskAvailable)
         {
             if (!isDeskAvailable)
             {
@@ -121,10 +120,10 @@ namespace DeskBooker.Core.Processor
             else
             {
                 _deskBookingRepositoryMock.Setup(x => x.Save(It.IsAny<DeskBooking>()))
-                    .Callback<DeskBooking>(deskBooking =>
-                    {
-                        deskBooking.Id = expectedDeskBookingId.Value;
-                    });
+                  .Callback<DeskBooking>(deskBooking =>
+                  {
+                      deskBooking.Id = expectedDeskBookingId.Value;
+                  });
             }
 
             var result = _processor.BookDesk(_request);

@@ -1,0 +1,24 @@
+﻿@page
+@model BookDeskConfirmationModel
+@{ ViewData["Title"] = "Book Desk Confirmation"; }
+
+<h1 class="display-4">Your desk is booked</h1>
+<p class="lead">
+    at our coffee shop in Zurich
+</p>
+<p>
+    Hi @Model.FirstName,
+</p>
+<p>
+    A desk was booked for you
+    on <strong>@Model.Date.ToShortDateString()</strong>.<br />
+    Your booking number is <strong>@Model.DeskBookingId</strong>.<br />
+    We're looking forward to seeing you!
+</p>
+<p>
+    Your Wired Brain Coffee team
+</p>
+
+<div>
+    <a class="btn-primary btn" style="margin-top: 25px" asp-area="" asp-page="/BookDesk">Book another desk</a>
+</div>
