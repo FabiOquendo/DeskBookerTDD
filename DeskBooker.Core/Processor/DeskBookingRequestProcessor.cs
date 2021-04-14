@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace DeskBooker.Core.Processor
 {
-    public class DeskBookingRequestProcessor
+    public class DeskBookingRequestProcessor : IDeskBookingRequestProcessor
     {
         private readonly IDeskBookingRepository _deskBookingRepository;
         private readonly IDeskRepository _deskRepository;
